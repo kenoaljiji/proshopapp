@@ -12,7 +12,9 @@ const orderSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref: 'User'
+
     },
+    
     orderItems: [
         {
             name: { type: String, required: true},
@@ -53,6 +55,10 @@ const orderSchema = mongoose.Schema({
         required: true,
         default: 0.0
     },
+    paymentMethod: {
+        type: String,
+        required: true
+    },
     isPaid: {
         type: Boolean,
         required: true,
@@ -69,6 +75,7 @@ const orderSchema = mongoose.Schema({
     deliveredAt: {
         type: Date,
     },
+
 
 }, {
     timestamps: true

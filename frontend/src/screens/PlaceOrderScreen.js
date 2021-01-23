@@ -18,11 +18,11 @@ const PlaceOrderScreen = ( {history} ) => {
         return (Math.round(num * 100) / 100).toFixed(2)
     }
     
-    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
 
-    cart.shippingPrice = cart.itemsPrice > 100 ? 5 : 100
+    cart.shippingPrice = cart.itemsPrice > 100 ? 20 : 80
 
-    cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
+    cart.taxPrice = addDecimals(Number((0.01 * cart.itemsPrice).toFixed(2)))
 
     const orderCreate = useSelector(state => state.orderCreate)
     const { order, success, error } = orderCreate
@@ -34,6 +34,7 @@ const PlaceOrderScreen = ( {history} ) => {
         // eslint-disable-next-line
     }, [history, success])
     
+    cart.totalPrice = addDecimals(Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice))
 
     const placeOrderHandler = () => {
         dispatch(createOrder({
@@ -42,11 +43,10 @@ const PlaceOrderScreen = ( {history} ) => {
             paymentMethod: cart.paymentMethod,
             shippingPrice: cart.shippingPrice,
             taxPrice: cart.taxPrice,
-            totalPrice: cart.totalPrice
+            totalPrice: cart.totalPrice,
         }))
     }
 
-    cart.totalPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
 
     return (
         <>
@@ -93,7 +93,7 @@ const PlaceOrderScreen = ( {history} ) => {
 
                                                 <Col md={4}>
                                                     <Link to={`/product/${item.product}`}>
-                                                        {item.name} x ${item.price} = ${item.qty * item.price}
+                                                        {item.qty} x ${item.price} = ${item.qty * item.price}
                                                     </Link>
                                                 </Col>
 

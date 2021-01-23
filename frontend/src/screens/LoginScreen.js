@@ -38,6 +38,7 @@ const LoginScreen = ({ location, history }) => {
 
 
     return (
+        loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : 
         <FormContainer>
             <h1>Sign In</h1>
             {error && (<Message variant='danger'>{error}</Message>) }

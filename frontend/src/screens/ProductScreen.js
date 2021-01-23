@@ -15,7 +15,8 @@ const ProductScreen = ( { history, match }) => {
 
     useEffect(() => {
         dispatch(listProductDetails(match.params.id))
-    }, [match])
+        // eslint-disable-next-line 
+    }, [match] )
 
     const productDetails = useSelector(state => state.productDetails)
     const { loading, error, product } = productDetails
