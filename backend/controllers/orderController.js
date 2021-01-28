@@ -1,10 +1,10 @@
-import { raw } from 'express'
+
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 
 
-// @desc Add Order Items 
-// @route Put /api/orders
+//@desc Add Order Items 
+//@route Put /api/orders
 //@access Private
 
 const addOrderItems = asyncHandler (async (req, res) => {
@@ -51,9 +51,11 @@ const getOrderById = asyncHandler (async (req, res) => {
 
 })
 
+
 //@desc Update order to paid
 //@route Get /api/orders/:id/pay
 //@access Private
+
 
 const updateOrderToPaid = asyncHandler (async (req, res) => {
     //Find order by id and user 
@@ -67,9 +69,33 @@ const updateOrderToPaid = asyncHandler (async (req, res) => {
             id: req.body.id,
             status: req.body.status,
             update_time: req.body.update_time,
-            email_address: req.body.email_address
-            
+            email_address: req.body.email_address   
         }
+
+        const updatedOrder = await order.save()
+
+        res.json(updatedOrder)
+    } else {
+        res.status(404)
+        throw new Error('Order not found')
+    }
+
+
+})
+
+//@desc Update order to paid
+//@route Get /api/orders/:id/pay
+//@access Private
+
+
+const updateOrderToDelivered = asyncHandler (async (req, res) => {
+    //Find order by id and user 
+    const order = await Order.findById(req.params.id) // Add a user and email to id:user
+
+    //Check if order exist and add send data
+    if(order) {
+        order.isDelivered= true
+        order.deliveredAt = Date.now()
 
         const updatedOrder = await order.save()
 
@@ -94,8 +120,21 @@ const getMyOrders = asyncHandler (async (req, res) => {
 
 })
 
+//@desc Get all orders
+//@route Get /api/orders
+//@access Private
+
+const getOrders = asyncHandler(async (req, res) => {
+
+    const orders = await Order.find({}).populate('user', 'id-name')
+    res.json(orders)
+
+})
 
 
-export { addOrderItems,getOrderById, updateOrderToPaid, getMyOrders }
+
+
+
+export { addOrderItems,getOrderById, updateOrderToPaid, getMyOrders, getOrders, updateOrderToDelivered }
 
 

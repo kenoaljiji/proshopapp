@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
+import Meta from '../components/Meta';
 import { listProducts } from '../actions/productActions'
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -23,6 +24,7 @@ const HomeScreen = () => {
 
     return (
         <>
+            <Meta/>
             <h1>Latest Products</h1>
             {loading ? ( <Loader/> ) : error ? ( <Message variant='danger'>{error}</Message> ) : (
          <Row>
